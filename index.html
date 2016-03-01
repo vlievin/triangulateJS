@@ -3,6 +3,7 @@
    <HEAD>
    	<script type="text/javascript" src="//d3js.org/d3.v3.min.js"></script>
     <script type="text/javascript" src="jsfeat.js"></script>
+    <script type="text/javascript" src="delaunay.js"></script>
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
@@ -171,14 +172,16 @@
   </div>
 
   <div style = "text-align:center; margin-top: 20px;">
-    <div id="svgContainer" class="row row box-shadow--2dp" style="text-align:center; display: inline-block">
+    <div id="resultContainer" class="row row box-shadow--2dp" style="text-align:center; display: inline-block">
       <div id="area"></div>
+      <canvas id="canvas_result" width="600" height="600" ></canvas>
     </div>
   </div>
 </div>
 
 
 <canvas id="canvas" width="600" height="600" style="float:left; visibility:hidden;"></canvas>
+<canvas id="canvas_result" width="600" height="600" ></canvas>
 
 
 </div>
@@ -186,7 +189,7 @@
 <script type="text/javascript">
 
 $("#loading_animation").hide();
-$("#svgContainer").hide();
+$("#resultContainer").hide();
 
 var imageLoader = document.getElementById('imageLoader');
     imageLoader.addEventListener('change', handleImage, false);
@@ -267,10 +270,10 @@ img.onload = function () {
     }
 
     // create svg variable
-    d3.select("svg").remove();
+    /*d3.select("svg").remove();
     var svg = d3.select("#area").append("svg")
                 .attr("width", canvas.width * factor_size)
-                .attr("height", canvas.height * factor_size);
+                .attr("height", canvas.height * factor_size);*/
 
 
     /// step 1 - resize to 50%
@@ -401,14 +404,45 @@ img.onload = function () {
       for (var i = 0 ; i < points.length ; i++)
         points[i] = [ factor_size * points[i][0] , factor_size * points[i][1] ];
 
-      console.log("compute delaunay triangulation...");
-    var delaunay = d3.geom.delaunay(points);
+    console.log("compute delaunay triangulation...");
+
+    var canvas_result = document.getElementById('canvas_result');
+    canvas_result.height = canvas.height * factor_size;
+    canvas_result.width = canvas.width * factor_size;
+    var ctx_result = canvas_result.getContext('2d');
+
+    tris = Delaunay.triangulate( points );
+    for ( var k = 0 ; k < tris.length ; k += 3 )
+    {
+      var a = points[  tris[k] ];
+      var b = points[  tris[k + 1] ];
+      var c = points[  tris[k + 2] ];
+      //centroid
+      var x = (parseFloat(a[0]) + parseFloat(b[0]) + parseFloat(c[0]))/ ( 3 * factor_size);
+      var y = (parseFloat(a[1]) + parseFloat(b[1]) + parseFloat(c[1]))/ ( 3 * factor_size);
+      color =  getColor(x, y)
+
+      ctx_result.fillStyle = color;
+      ctx_result.strokeStyle = color;
+      ctx_result.beginPath();
+      ctx_result.moveTo(a[0],a[1]);
+      ctx_result.lineTo(b[0],b[1]);
+      ctx_result.lineTo(c[0],c[1]);
+      ctx_result.closePath();
+      ctx_result.fill();
+      ctx_result.stroke();
+
+    }
+    
+
+    /*console.log("compute d3 delaunay triangulation...");
+    var delaunayd3 = d3.geom.delaunay(points);
 
 
     path = svg.append("g")
       .selectAll("path");
       
-      path = path.data(delaunay);
+      path = path.data(delaunayd3);
     
     console.log("draw polygons...");
     path.enter().append("path")
@@ -427,6 +461,8 @@ img.onload = function () {
               //.style('stroke', "white")
               .style("stroke-width" , 1);
 
+          */
+
     /*for (i = 0 ; i < points.length ; i++ )
     {
         var circle = svg.append("circle")
@@ -438,7 +474,7 @@ img.onload = function () {
 
     console.log("done!");
     $("#loading_animation").hide();
-    $("#svgContainer").show();
+    $("#resultContainer").show();
     
 
 }
