@@ -1,100 +1,134 @@
 <!DOCTYPE html PUBLIC>
 <HTML>
    <HEAD>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
    	<script type="text/javascript" src="//d3js.org/d3.v3.min.js"></script>
     <script type="text/javascript" src="jsfeat.js"></script>
 
-    <link href="//getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <style type="text/css">
 
-      .sk-folding-cube {
-  margin: 20px auto;
-  width: 40px;
-  height: 40px;
-  position: relative;
-  -webkit-transform: rotateZ(45deg);
-          transform: rotateZ(45deg);
-}
+    body {
+    background-color: #eee;
+    }
 
-.sk-folding-cube .sk-cube {
-  float: left;
-  width: 50%;
-  height: 50%;
-  position: relative;
-  -webkit-transform: scale(1.1);
-      -ms-transform: scale(1.1);
-          transform: scale(1.1); 
-}
-.sk-folding-cube .sk-cube:before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #333;
-  -webkit-animation: sk-foldCubeAngle 2.4s infinite linear both;
-          animation: sk-foldCubeAngle 2.4s infinite linear both;
-  -webkit-transform-origin: 100% 100%;
-      -ms-transform-origin: 100% 100%;
-          transform-origin: 100% 100%;
-}
-.sk-folding-cube .sk-cube2 {
-  -webkit-transform: scale(1.1) rotateZ(90deg);
-          transform: scale(1.1) rotateZ(90deg);
-}
-.sk-folding-cube .sk-cube3 {
-  -webkit-transform: scale(1.1) rotateZ(180deg);
-          transform: scale(1.1) rotateZ(180deg);
-}
-.sk-folding-cube .sk-cube4 {
-  -webkit-transform: scale(1.1) rotateZ(270deg);
-          transform: scale(1.1) rotateZ(270deg);
-}
-.sk-folding-cube .sk-cube2:before {
-  -webkit-animation-delay: 0.3s;
-          animation-delay: 0.3s;
-}
-.sk-folding-cube .sk-cube3:before {
-  -webkit-animation-delay: 0.6s;
-          animation-delay: 0.6s; 
-}
-.sk-folding-cube .sk-cube4:before {
-  -webkit-animation-delay: 0.9s;
-          animation-delay: 0.9s;
-}
-@-webkit-keyframes sk-foldCubeAngle {
-  0%, 10% {
-    -webkit-transform: perspective(140px) rotateX(-180deg);
-            transform: perspective(140px) rotateX(-180deg);
-    opacity: 0; 
-  } 25%, 75% {
-    -webkit-transform: perspective(140px) rotateX(0deg);
-            transform: perspective(140px) rotateX(0deg);
-    opacity: 1; 
-  } 90%, 100% {
-    -webkit-transform: perspective(140px) rotateY(180deg);
-            transform: perspective(140px) rotateY(180deg);
-    opacity: 0; 
-  } 
-}
+    .row {
+      background-color: #fff;
+      padding: 20px;
+      }
+      .box-shadow--2dp {
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12)
+      }
+      .box-shadow--3dp {
+        box-shadow: 0 3px 4px 0 rgba(0, 0, 0, .14), 0 3px 3px -2px rgba(0, 0, 0, .2), 0 1px 8px 0 rgba(0, 0, 0, .12)
+      }
+      .box-shadow--4dp {
+        box-shadow: 0 4px 5px 0 rgba(0, 0, 0, .14), 0 1px 10px 0 rgba(0, 0, 0, .12), 0 2px 4px -1px rgba(0, 0, 0, .2)
+      }
+      .box-shadow--6dp {
+        box-shadow: 0 6px 10px 0 rgba(0, 0, 0, .14), 0 1px 18px 0 rgba(0, 0, 0, .12), 0 3px 5px -1px rgba(0, 0, 0, .2)
+      }
+      .box-shadow--8dp {
+        box-shadow: 0 8px 10px 1px rgba(0, 0, 0, .14), 0 3px 14px 2px rgba(0, 0, 0, .12), 0 5px 5px -3px rgba(0, 0, 0, .2)
+      }
+      .box-shadow--16dp {
+        box-shadow: 0 16px 24px 2px rgba(0, 0, 0, .14), 0 6px 30px 5px rgba(0, 0, 0, .12), 0 8px 10px -5px rgba(0, 0, 0, .2)
+      }
+      .top-buffer { margin-top:5px; }
 
-@keyframes sk-foldCubeAngle {
-  0%, 10% {
-    -webkit-transform: perspective(140px) rotateX(-180deg);
-            transform: perspective(140px) rotateX(-180deg);
-    opacity: 0; 
-  } 25%, 75% {
-    -webkit-transform: perspective(140px) rotateX(0deg);
-            transform: perspective(140px) rotateX(0deg);
-    opacity: 1; 
-  } 90%, 100% {
-    -webkit-transform: perspective(140px) rotateY(180deg);
-            transform: perspective(140px) rotateY(180deg);
-    opacity: 0; 
-  }
-}
+            .sk-folding-cube {
+        margin: 20px auto;
+        width: 40px;
+        height: 40px;
+        position: relative;
+        -webkit-transform: rotateZ(45deg);
+                transform: rotateZ(45deg);
+      }
+
+      .sk-folding-cube .sk-cube {
+        float: left;
+        width: 50%;
+        height: 50%;
+        position: relative;
+        -webkit-transform: scale(1.1);
+            -ms-transform: scale(1.1);
+                transform: scale(1.1); 
+      }
+      .sk-folding-cube .sk-cube:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #333;
+        -webkit-animation: sk-foldCubeAngle 2.4s infinite linear both;
+                animation: sk-foldCubeAngle 2.4s infinite linear both;
+        -webkit-transform-origin: 100% 100%;
+            -ms-transform-origin: 100% 100%;
+                transform-origin: 100% 100%;
+      }
+      .sk-folding-cube .sk-cube2 {
+        -webkit-transform: scale(1.1) rotateZ(90deg);
+                transform: scale(1.1) rotateZ(90deg);
+      }
+      .sk-folding-cube .sk-cube3 {
+        -webkit-transform: scale(1.1) rotateZ(180deg);
+                transform: scale(1.1) rotateZ(180deg);
+      }
+      .sk-folding-cube .sk-cube4 {
+        -webkit-transform: scale(1.1) rotateZ(270deg);
+                transform: scale(1.1) rotateZ(270deg);
+      }
+      .sk-folding-cube .sk-cube2:before {
+        -webkit-animation-delay: 0.3s;
+                animation-delay: 0.3s;
+      }
+      .sk-folding-cube .sk-cube3:before {
+        -webkit-animation-delay: 0.6s;
+                animation-delay: 0.6s; 
+      }
+      .sk-folding-cube .sk-cube4:before {
+        -webkit-animation-delay: 0.9s;
+                animation-delay: 0.9s;
+      }
+      @-webkit-keyframes sk-foldCubeAngle {
+        0%, 10% {
+          -webkit-transform: perspective(140px) rotateX(-180deg);
+                  transform: perspective(140px) rotateX(-180deg);
+          opacity: 0; 
+        } 25%, 75% {
+          -webkit-transform: perspective(140px) rotateX(0deg);
+                  transform: perspective(140px) rotateX(0deg);
+          opacity: 1; 
+        } 90%, 100% {
+          -webkit-transform: perspective(140px) rotateY(180deg);
+                  transform: perspective(140px) rotateY(180deg);
+          opacity: 0; 
+        } 
+      }
+
+      @keyframes sk-foldCubeAngle {
+        0%, 10% {
+          -webkit-transform: perspective(140px) rotateX(-180deg);
+                  transform: perspective(140px) rotateX(-180deg);
+          opacity: 0; 
+        } 25%, 75% {
+          -webkit-transform: perspective(140px) rotateX(0deg);
+                  transform: perspective(140px) rotateX(0deg);
+          opacity: 1; 
+        } 90%, 100% {
+          -webkit-transform: perspective(140px) rotateY(180deg);
+                  transform: perspective(140px) rotateY(180deg);
+          opacity: 0; 
+        }
+      }
 
 
       
@@ -102,33 +136,61 @@
     </style>
 
       <TITLE>
-         Triangulr
+         TriangulateJS
       </TITLE>
    </HEAD>
 <BODY>
 
-<input type="file" id="imageLoader" name="imageLoader" accept="image/*"/>
-<div id="loading_animation" >
-  <div class="sk-folding-cube">
-    <div class="sk-cube1 sk-cube"></div>
-    <div class="sk-cube2 sk-cube"></div>
-    <div class="sk-cube4 sk-cube"></div>
-    <div class="sk-cube3 sk-cube"></div>
+  <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">TriangulateJS</a>
+    </div>
+    <!-- <ul class="nav navbar-nav">
+      <li class="active"><a href="#">Home</a></li>
+      <li><a href="#">Page 1</a></li>
+      <li><a href="#">Page 2</a></li> 
+      <li><a href="#">Page 3</a></li> 
+    </ul> -->
   </div>
-  <div style = "text-align:center;">
-    <p>Please wait :)</p>
-    <br>
-    <p>It shouldn't take long...</p>
+</nav>
+
+<div class  = "constainer" >
+  <div class="row box-shadow--2dp" style="width : 300px; margin: 0 auto; ">
+    <p>Transform your file into polygon art</p>
+    <input type="file" id="imageLoader" name="imageLoader" accept="image/*"/>
+  </div>
+  <div id="loading_animation" >
+    <div class="sk-folding-cube">
+      <div class="sk-cube1 sk-cube"></div>
+      <div class="sk-cube2 sk-cube"></div>
+      <div class="sk-cube4 sk-cube"></div>
+      <div class="sk-cube3 sk-cube"></div>
+    </div>
+    <div style = "text-align:center;">
+      <p>Please wait :)</p>
+      <br>
+      <p>It shouldn't take long...</p>
+    </div>
+  </div>
+
+  <div style = "text-align:center; margin-top: 20px;">
+    <div id="svgContainer" class="row row box-shadow--2dp" style="text-align:center; display: inline-block">
+      <div id="area"></div>
+    </div>
   </div>
 </div>
 
+
 <canvas id="canvas" width="600" height="600" style="float:left; visibility:hidden;"></canvas>
-<!-- <div id="color" style="width:200px;height:50px;float:left"></div> -->
-<div id="area"></div>
-<!-- <canvas id="forbidden_canvas" width="600" height="600" style="float:left;"></canvas> -->
+
+
+</div>
+
 <script type="text/javascript">
 
 $("#loading_animation").hide();
+$("#svgContainer").hide();
 
 var imageLoader = document.getElementById('imageLoader');
     imageLoader.addEventListener('change', handleImage, false);
@@ -147,8 +209,12 @@ function handleImage(e){
 //var img = new Image();
 //img.src = 'flower.jpg';
 
-r_edges = 5
-r_stroke = 3
+var r_edges = 5
+var r_stroke = 3
+var NUMBER_OF_POINTS = 200;
+var factor_size = 1.5;
+
+
 var forbidden_values = new Array();
   for (var i = 0 ; i <canvas.width; i++)
   {
@@ -170,17 +236,12 @@ function drawForbidden(x,y, forbidden_values)
       {
         forbidden_values[ i ][ j ] = 100;
       }
-
     }
   }
 }
 
-var NUMBER_OF_POINTS = 200;
-
 
 img.onload = function () {
-
-
     console.log("onLoad...");
 
     var canvas = document.getElementById('canvas');
@@ -208,9 +269,10 @@ img.onload = function () {
     }
 
     // create svg variable
+    d3.select("svg").remove();
     var svg = d3.select("#area").append("svg")
-                .attr("width", canvas.width)
-                .attr("height", canvas.height);
+                .attr("width", canvas.width * factor_size)
+                .attr("height", canvas.height * factor_size);
 
 
     /// step 1 - resize to 50%
@@ -336,6 +398,11 @@ img.onload = function () {
 
 
       /* POINTS CREATED */
+
+      /*translates points : factor size*/
+      for (var i = 0 ; i < points.length ; i++)
+        points[i] = [ factor_size * points[i][0] , factor_size * points[i][1] ];
+
       console.log("compute delaunay triangulation...");
     var delaunay = d3.geom.delaunay(points);
 
@@ -349,14 +416,13 @@ img.onload = function () {
     path.enter().append("path")
         .attr("d", function(d) { return "M" + d.join("L") + "Z"; })
               .style('fill', function(d, i) {
-              var x = (parseFloat(d[0][0]) + parseFloat(d[1][0]) + parseFloat(d[2][0]))/3;
-              var y = (parseFloat(d[0][1]) + parseFloat(d[1][1]) + parseFloat(d[2][1]))/3;
+              var x = (parseFloat(d[0][0]) + parseFloat(d[1][0]) + parseFloat(d[2][0]))/ ( 3 * factor_size);
+              var y = (parseFloat(d[0][1]) + parseFloat(d[1][1]) + parseFloat(d[2][1]))/ ( 3 * factor_size);
               return getColor(x, y);
-                
               })
              .style('stroke', function(d, i) {
-              var x = (parseFloat(d[0][0]) + parseFloat(d[1][0]) + parseFloat(d[2][0]))/3;
-              var y = (parseFloat(d[0][1]) + parseFloat(d[1][1]) + parseFloat(d[2][1]))/3;
+              var x = (parseFloat(d[0][0]) + parseFloat(d[1][0]) + parseFloat(d[2][0]))/ ( 3 * factor_size);
+              var y = (parseFloat(d[0][1]) + parseFloat(d[1][1]) + parseFloat(d[2][1]))/ ( 3 * factor_size);
               return getColor(x, y);
                 
               })
@@ -374,6 +440,7 @@ img.onload = function () {
 
     console.log("done!");
     $("#loading_animation").hide();
+    $("#svgContainer").show();
     
 
 }
