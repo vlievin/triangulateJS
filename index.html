@@ -107,7 +107,7 @@
    </HEAD>
 <BODY>
 
-<input type="file" id="imageLoader" name="imageLoader"/>
+<input type="file" id="imageLoader" name="imageLoader" accept="image/*"/>
 <div id="loading_animation" >
   <div class="sk-folding-cube">
     <div class="sk-cube1 sk-cube"></div>
@@ -261,8 +261,6 @@ img.onload = function () {
     console.log("edges Detection...");
     img_u8 = new jsfeat.matrix_t(canvas.width, canvas.height, jsfeat.U8C1_t);
     var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-
-    console.log(imageData);
 
     jsfeat.imgproc.grayscale(imageData.data, canvas.width, canvas.height, img_u8);
 
