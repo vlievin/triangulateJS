@@ -129,10 +129,6 @@
           opacity: 0; 
         }
       }
-
-
-      
-
     </style>
 
       <TITLE>
@@ -213,6 +209,8 @@ var r_edges = 5
 var r_stroke = 3
 var NUMBER_OF_POINTS = 200;
 var factor_size = 1.5;
+var can1 = 20;
+var can2 = 50;
 
 
 var forbidden_values = new Array();
@@ -331,7 +329,7 @@ img.onload = function () {
 
     jsfeat.imgproc.gaussian_blur(img_u8, img_u8, kernel_size, 0);
 
-    jsfeat.imgproc.canny(img_u8, img_u8, 30, 158);
+    jsfeat.imgproc.canny(img_u8, img_u8, can1, can2);
 
       /* ADD POINTS AROUND EDGES */
       /*var pix = 0;
