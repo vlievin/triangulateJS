@@ -202,6 +202,7 @@ function handleImage(e){
     $("#loading_animation").show(); 
     var reader = new FileReader();
     reader.onload = function(event){
+      $("#loading_animation").show(); 
         img.src = event.target.result;
     }
     reader.readAsDataURL(e.target.files[0]);     
@@ -340,17 +341,6 @@ img.onload = function () {
     jsfeat.imgproc.canny(img_u8, img_u8, can1, can2);
 
       /* ADD POINTS AROUND EDGES */
-      /*var pix = 0;
-      var alpha = (0xff << 24);
-      ref = []
-      var i = img_u8.cols*img_u8.rows, pix = 0;
-       while(--i >= 0) {
-         pix = img_u8.data[i];
-         var d = (pix << 8) | pix;
-        if (d > 0)
-          ref.push(d)
-
-      }*/
 
       test = []
       var n = img_u8.cols*img_u8.rows;
@@ -363,10 +353,18 @@ img.onload = function () {
            var d = (pix << 8) | pix;
            if ( d > 0 )
            {  
+              if (Math.random() < 0.9)
+              {
+                rr = r_stroke;
+              }
+              else
+              {
+                rr = 4 * r_stroke;
+              }
               test.push(d)
-              var d = r_stroke/2;
-              var x = Math.floor(i - d + Math.random() * r_stroke );
-              var y = Math.floor(j - d + Math.random() * r_stroke );
+              var d = rr/2;
+              var x = Math.floor(i - d + Math.random() * rr );
+              var y = Math.floor(j - d + Math.random() * rr );
               if (x >= 0 && y >= 0 && x < canvas.width && y <  canvas.height )
               {
                 if (forbidden_values[ x ][ y ] == 0 )
