@@ -4,7 +4,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
    	<script type="text/javascript" src="//d3js.org/d3.v3.min.js"></script>
     <script type="text/javascript" src="jsfeat.js"></script>
-   
+
     <link href="//getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
     <style type="text/css">
 
@@ -118,15 +118,14 @@
   <div style = "text-align:center;">
     <p>Please wait :)</p>
     <br>
-    <p>The process can take up to 5min...</p>
+    <p>It shouldn't take long...</p>
   </div>
 </div>
 
 <canvas id="canvas" width="600" height="600" style="float:left; visibility:hidden;"></canvas>
 <!-- <div id="color" style="width:200px;height:50px;float:left"></div> -->
 <div id="area"></div>
-<canvas id="edges_canvas" width="600" height="600" style="float:left; visibility:hidden;"></canvas>
-<canvas id="forbidden_canvas" width="600" height="600" style="float:left; visibility:hidden;"></canvas>
+<!-- <canvas id="forbidden_canvas" width="600" height="600" style="float:left;"></canvas> -->
 <script type="text/javascript">
 
 $("#loading_animation").hide();
@@ -147,8 +146,6 @@ function handleImage(e){
 
 //var img = new Image();
 //img.src = 'flower.jpg';
-var canvas = document.getElementById('canvas');
-var ctx = canvas.getContext('2d');
 
 r_edges = 5
 r_stroke = 3
@@ -179,17 +176,43 @@ function drawForbidden(x,y, forbidden_values)
 }
 
 var NUMBER_OF_POINTS = 200;
-// create svg variable
-var svg = d3.select("#area").append("svg")
-    				.attr("width", canvas.width)
-    				.attr("height", canvas.height);
 
 
 img.onload = function () {
 
 
+    console.log("onLoad...");
+
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+
+    // get color based on center
+    function getColor(x, y) {
+            var pixel = ctx.getImageData(x, y, 1, 1);
+          var data = pixel.data;
+          var rgba = 'rgba(' + data[0] + ',' + data[1] +
+                   ',' + data[2] + ',' + data[3] + ')';
+        return rgba
+          }
+
     /// set size proportional to image
-    canvas.height = canvas.width * (img.height / img.width);
+    tmp = canvas.width * (img.height / img.width);
+    if (tmp > canvas.height)
+    {
+      k = canvas.height / tmp;
+      canvas.width *= k;
+    }
+    else
+    {
+      canvas.height = tmp;
+    }
+
+    // create svg variable
+    var svg = d3.select("#area").append("svg")
+                .attr("width", canvas.width)
+                .attr("height", canvas.height);
+
+
     /// step 1 - resize to 50%
     var oc = document.createElement('canvas'),
         octx = oc.getContext('2d');
@@ -204,6 +227,7 @@ img.onload = function () {
     0, 0, canvas.width, canvas.height);
     /* RESIZED */
 
+    console.log("add random points...");
     points = []
     points.push([ 0 , 0]);
     points.push([ 0 , canvas.height]);
@@ -234,11 +258,11 @@ img.onload = function () {
       drawForbidden(points[k][0],points[k][1], forbidden_values);
 
     /* EDGES DETECTION */
+    console.log("edges Detection...");
     img_u8 = new jsfeat.matrix_t(canvas.width, canvas.height, jsfeat.U8C1_t);
-    
-    var edges_canvas = document.getElementById('edges_canvas');
-    var edges_ctx = edges_canvas.getContext('2d');
     var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+    console.log(imageData);
 
     jsfeat.imgproc.grayscale(imageData.data, canvas.width, canvas.height, img_u8);
 
@@ -249,26 +273,31 @@ img.onload = function () {
 
     jsfeat.imgproc.canny(img_u8, img_u8, 30, 158);
 
-    var data_u32 = new Uint32Array(imageData.data.buffer);
-    var alpha = (0xff << 24);
-    var i = img_u8.cols*img_u8.rows, pix = 0;
-    while(--i >= 0) {
-        pix = img_u8.data[i];
-        data_u32[i] = alpha | (pix << 16) | (pix << 8) | pix;
-    }
-
-    edges_ctx.putImageData(imageData, 0, 0);
-
-      console.log(".. contour points");
       /* ADD POINTS AROUND EDGES */
-      for (i = 0; i < oc.width; i++) // oc.width
+      /*var pix = 0;
+      var alpha = (0xff << 24);
+      ref = []
+      var i = img_u8.cols*img_u8.rows, pix = 0;
+       while(--i >= 0) {
+         pix = img_u8.data[i];
+         var d = (pix << 8) | pix;
+        if (d > 0)
+          ref.push(d)
+
+      }*/
+
+      test = []
+      var n = img_u8.cols*img_u8.rows;
+      for (i = 0; i < img_u8.cols; i++) // oc.width
       {
-        for (j=0; j < oc.height; j++) // oc.height
+        for (j=0; j < img_u8.rows; j++) // oc.height
         {
-           var pixel = edges_ctx.getImageData(i, j, 1, 1);
-           var data = pixel.data; 
-           if (data[0] > 0 )
+           k = (j * img_u8.cols + i );
+           pix = img_u8.data[k];
+           var d = (pix << 8) | pix;
+           if ( d > 0 )
            {  
+              test.push(d)
               var d = r_stroke/2;
               var x = Math.floor(i - d + Math.random() * r_stroke );
               var y = Math.floor(j - d + Math.random() * r_stroke );
@@ -286,6 +315,9 @@ img.onload = function () {
 
         }
       }
+
+      //console.log(ref.length);
+      //console.log(test.length);
 
 
       /*var forb = document.getElementById('forbidden_canvas');
@@ -306,6 +338,7 @@ img.onload = function () {
 
 
       /* POINTS CREATED */
+      console.log("compute delaunay triangulation...");
     var delaunay = d3.geom.delaunay(points);
 
 
@@ -313,7 +346,8 @@ img.onload = function () {
       .selectAll("path");
       
       path = path.data(delaunay);
-        
+    
+    console.log("draw polygons...");
     path.enter().append("path")
         .attr("d", function(d) { return "M" + d.join("L") + "Z"; })
               .style('fill', function(d, i) {
@@ -322,15 +356,15 @@ img.onload = function () {
               return getColor(x, y);
                 
               })
-              .style('stroke', function(d, i) {
+             .style('stroke', function(d, i) {
               var x = (parseFloat(d[0][0]) + parseFloat(d[1][0]) + parseFloat(d[2][0]))/3;
               var y = (parseFloat(d[0][1]) + parseFloat(d[1][1]) + parseFloat(d[2][1]))/3;
               return getColor(x, y);
                 
               })
+              //.style('stroke', "white")
               .style("stroke-width" , 1);
 
-    console.log(points.length);
     /*for (i = 0 ; i < points.length ; i++ )
     {
         var circle = svg.append("circle")
@@ -340,21 +374,11 @@ img.onload = function () {
                 .attr("fill", "black");
     }*/
 
-
+    console.log("done!");
     $("#loading_animation").hide();
     
 
 }
-
-// get color based on center
-function getColor(x, y) {
-        var pixel = ctx.getImageData(x, y, 1, 1);
-	    var data = pixel.data;
-	    var rgba = 'rgba(' + data[0] + ',' + data[1] +
-	             ',' + data[2] + ',' + data[3] + ')';
-
-		return rgba
-      }
 
 
 var color = document.getElementById('color');
