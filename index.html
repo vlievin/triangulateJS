@@ -1,135 +1,246 @@
 <!DOCTYPE html PUBLIC>
 <HTML>
    <HEAD>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-   	<script type="text/javascript" src="//d3js.org/d3.v3.min.js"></script>
     <script type="text/javascript" src="jsfeat.js"></script>
-   
-    <link href="//getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script type="text/javascript" src="delaunay.js"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <style type="text/css">
 
-      .sk-folding-cube {
-  margin: 20px auto;
-  width: 40px;
-  height: 40px;
-  position: relative;
-  -webkit-transform: rotateZ(45deg);
-          transform: rotateZ(45deg);
-}
+    body {
+    background-color: #eee;
+    }
 
-.sk-folding-cube .sk-cube {
-  float: left;
-  width: 50%;
-  height: 50%;
-  position: relative;
-  -webkit-transform: scale(1.1);
-      -ms-transform: scale(1.1);
-          transform: scale(1.1); 
-}
-.sk-folding-cube .sk-cube:before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #333;
-  -webkit-animation: sk-foldCubeAngle 2.4s infinite linear both;
-          animation: sk-foldCubeAngle 2.4s infinite linear both;
-  -webkit-transform-origin: 100% 100%;
-      -ms-transform-origin: 100% 100%;
-          transform-origin: 100% 100%;
-}
-.sk-folding-cube .sk-cube2 {
-  -webkit-transform: scale(1.1) rotateZ(90deg);
-          transform: scale(1.1) rotateZ(90deg);
-}
-.sk-folding-cube .sk-cube3 {
-  -webkit-transform: scale(1.1) rotateZ(180deg);
-          transform: scale(1.1) rotateZ(180deg);
-}
-.sk-folding-cube .sk-cube4 {
-  -webkit-transform: scale(1.1) rotateZ(270deg);
-          transform: scale(1.1) rotateZ(270deg);
-}
-.sk-folding-cube .sk-cube2:before {
-  -webkit-animation-delay: 0.3s;
-          animation-delay: 0.3s;
-}
-.sk-folding-cube .sk-cube3:before {
-  -webkit-animation-delay: 0.6s;
-          animation-delay: 0.6s; 
-}
-.sk-folding-cube .sk-cube4:before {
-  -webkit-animation-delay: 0.9s;
-          animation-delay: 0.9s;
-}
-@-webkit-keyframes sk-foldCubeAngle {
-  0%, 10% {
-    -webkit-transform: perspective(140px) rotateX(-180deg);
-            transform: perspective(140px) rotateX(-180deg);
-    opacity: 0; 
-  } 25%, 75% {
-    -webkit-transform: perspective(140px) rotateX(0deg);
-            transform: perspective(140px) rotateX(0deg);
-    opacity: 1; 
-  } 90%, 100% {
-    -webkit-transform: perspective(140px) rotateY(180deg);
-            transform: perspective(140px) rotateY(180deg);
-    opacity: 0; 
-  } 
-}
+    .grayCol{
+    background-color: #eee;
+    }
 
-@keyframes sk-foldCubeAngle {
-  0%, 10% {
-    -webkit-transform: perspective(140px) rotateX(-180deg);
-            transform: perspective(140px) rotateX(-180deg);
-    opacity: 0; 
-  } 25%, 75% {
-    -webkit-transform: perspective(140px) rotateX(0deg);
-            transform: perspective(140px) rotateX(0deg);
-    opacity: 1; 
-  } 90%, 100% {
-    -webkit-transform: perspective(140px) rotateY(180deg);
-            transform: perspective(140px) rotateY(180deg);
-    opacity: 0; 
-  }
-}
+    h2
+    {
+      color: #666;
+    }
 
+    .row {
+      background-color: #fff;
+      padding: 20px;
+      }
+      .box-shadow--2dp {
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12)
+      }
+      .box-shadow--3dp {
+        box-shadow: 0 3px 4px 0 rgba(0, 0, 0, .14), 0 3px 3px -2px rgba(0, 0, 0, .2), 0 1px 8px 0 rgba(0, 0, 0, .12)
+      }
+      .box-shadow--4dp {
+        box-shadow: 0 4px 5px 0 rgba(0, 0, 0, .14), 0 1px 10px 0 rgba(0, 0, 0, .12), 0 2px 4px -1px rgba(0, 0, 0, .2)
+      }
+      .box-shadow--6dp {
+        box-shadow: 0 6px 10px 0 rgba(0, 0, 0, .14), 0 1px 18px 0 rgba(0, 0, 0, .12), 0 3px 5px -1px rgba(0, 0, 0, .2)
+      }
+      .box-shadow--8dp {
+        box-shadow: 0 8px 10px 1px rgba(0, 0, 0, .14), 0 3px 14px 2px rgba(0, 0, 0, .12), 0 5px 5px -3px rgba(0, 0, 0, .2)
+      }
+      .box-shadow--16dp {
+        box-shadow: 0 16px 24px 2px rgba(0, 0, 0, .14), 0 6px 30px 5px rgba(0, 0, 0, .12), 0 8px 10px -5px rgba(0, 0, 0, .2)
+      }
+      .top-buffer { margin-top:5px; }
 
-      
+            .sk-folding-cube {
+        margin: 20px auto;
+        width: 40px;
+        height: 40px;
+        position: relative;
+        -webkit-transform: rotateZ(45deg);
+                transform: rotateZ(45deg);
+      }
 
+      .sk-folding-cube .sk-cube {
+        float: left;
+        width: 50%;
+        height: 50%;
+        position: relative;
+        -webkit-transform: scale(1.1);
+            -ms-transform: scale(1.1);
+                transform: scale(1.1); 
+      }
+      .sk-folding-cube .sk-cube:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #333;
+        -webkit-animation: sk-foldCubeAngle 2.4s infinite linear both;
+                animation: sk-foldCubeAngle 2.4s infinite linear both;
+        -webkit-transform-origin: 100% 100%;
+            -ms-transform-origin: 100% 100%;
+                transform-origin: 100% 100%;
+      }
+      .sk-folding-cube .sk-cube2 {
+        -webkit-transform: scale(1.1) rotateZ(90deg);
+                transform: scale(1.1) rotateZ(90deg);
+      }
+      .sk-folding-cube .sk-cube3 {
+        -webkit-transform: scale(1.1) rotateZ(180deg);
+                transform: scale(1.1) rotateZ(180deg);
+      }
+      .sk-folding-cube .sk-cube4 {
+        -webkit-transform: scale(1.1) rotateZ(270deg);
+                transform: scale(1.1) rotateZ(270deg);
+      }
+      .sk-folding-cube .sk-cube2:before {
+        -webkit-animation-delay: 0.3s;
+                animation-delay: 0.3s;
+      }
+      .sk-folding-cube .sk-cube3:before {
+        -webkit-animation-delay: 0.6s;
+                animation-delay: 0.6s; 
+      }
+      .sk-folding-cube .sk-cube4:before {
+        -webkit-animation-delay: 0.9s;
+                animation-delay: 0.9s;
+      }
+      @-webkit-keyframes sk-foldCubeAngle {
+        0%, 10% {
+          -webkit-transform: perspective(140px) rotateX(-180deg);
+                  transform: perspective(140px) rotateX(-180deg);
+          opacity: 0; 
+        } 25%, 75% {
+          -webkit-transform: perspective(140px) rotateX(0deg);
+                  transform: perspective(140px) rotateX(0deg);
+          opacity: 1; 
+        } 90%, 100% {
+          -webkit-transform: perspective(140px) rotateY(180deg);
+                  transform: perspective(140px) rotateY(180deg);
+          opacity: 0; 
+        } 
+      }
+
+      @keyframes sk-foldCubeAngle {
+        0%, 10% {
+          -webkit-transform: perspective(140px) rotateX(-180deg);
+                  transform: perspective(140px) rotateX(-180deg);
+          opacity: 0; 
+        } 25%, 75% {
+          -webkit-transform: perspective(140px) rotateX(0deg);
+                  transform: perspective(140px) rotateX(0deg);
+          opacity: 1; 
+        } 90%, 100% {
+          -webkit-transform: perspective(140px) rotateY(180deg);
+                  transform: perspective(140px) rotateY(180deg);
+          opacity: 0; 
+        }
+      }
     </style>
 
       <TITLE>
-         Triangulr
+         TriangulateJS
       </TITLE>
    </HEAD>
 <BODY>
 
-<input type="file" id="imageLoader" name="imageLoader"/>
-<div id="loading_animation" >
-  <div class="sk-folding-cube">
-    <div class="sk-cube1 sk-cube"></div>
-    <div class="sk-cube2 sk-cube"></div>
-    <div class="sk-cube4 sk-cube"></div>
-    <div class="sk-cube3 sk-cube"></div>
+  <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">TriangulateJS</a>
+    </div>
+    <!-- <ul class="nav navbar-nav">
+      <li class="active"><a href="#">Home</a></li>
+      <li><a href="#">Page 1</a></li>
+      <li><a href="#">Page 2</a></li> 
+      <li><a href="#">Page 3</a></li> 
+    </ul> -->
   </div>
-  <div style = "text-align:center;">
-    <p>Please wait :)</p>
-    <br>
-    <p>The process can take up to 5min...</p>
+</nav>
+
+
+<a href="https://github.com/vlievin/triangulateJS" ><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
+
+<div class  = "container"  >
+  <div class = "row" style="background-color: transparent;">
+    <h2>Turn your pictures into polygon art</h2>
+    <div class="col-xs-6">
+      <img src="images/flower.jpg" class="img-responsive row box-shadow--2dp" alt="raw image">
+    </div>
+    <!-- <div class="col-xs-2">
+      <div >
+        <img src="images/arrow.png"  style="width: 50px; display: block; margin: 0 auto;">
+      </div>
+    </div> -->
+    <div class="col-xs-6">
+      <img src="images/flower_r.png" class="img-responsive row box-shadow--2dp" alt="result">
+    </div>
+  </div>
+
+  <div class = "row" style="background-color: transparent;">
+    <h2>Automatically add more triangles where it is need</h2>
+    <div class="col-xs-6">
+      <img src="images/landscape.jpg" class="img-responsive row box-shadow--2dp" alt="raw image">
+    </div>
+    <div class="col-xs-6">
+      <img src="images/landscape_r.png" class="img-responsive row box-shadow--2dp" alt="result">
+    </div>
+
+  </div>
+  <div class = "row" style="background-color: transparent;">
+    <h2>Works even with your face</h2>
+    <div class="col-xs-6">
+      <img src="images/jimi.jpg" class="img-responsive row box-shadow--2dp" alt="raw image">
+    </div>
+    <div class="col-xs-6">
+      <img src="images/jimi_r.png" class="img-responsive row box-shadow--2dp" alt="result">
+    </div>
+
+  </div>
+</div>
+<div class  = "container" >
+  <h2>Try it now!</h2>
+  <div class="row box-shadow--6dp" style="width : 300px; margin: 0 auto; background-color: #3498db; color: white; border-radius: 3px;">
+    <!-- <p>Get started</p> -->
+    <input type="file" id="imageLoader" name="imageLoader" accept="image/*"/>
+    <!-- <div id="log">blablabla</div> -->
+    <a style="color:white;" id="download">Download as image</a>
+  </div>
+  <div id="loading_animation" >
+    <div class="sk-folding-cube">
+      <div class="sk-cube1 sk-cube"></div>
+      <div class="sk-cube2 sk-cube"></div>
+      <div class="sk-cube4 sk-cube"></div>
+      <div class="sk-cube3 sk-cube"></div>
+    </div>
+    <div style = "text-align:center;">
+      <p>Please wait :) It shouldn't take long...</p>
+    </div>
+  </div>
+
+  <div style = "text-align:center; margin-top: 20px;">
+    <div id="resultContainer" class="row row box-shadow--2dp" style="text-align:center; display: inline-block">
+      <div id="area"></div>
+      <canvas id="canvas_result" width="600" height="600" ></canvas>
+    </div>
   </div>
 </div>
 
+
 <canvas id="canvas" width="600" height="600" style="float:left; visibility:hidden;"></canvas>
-<!-- <div id="color" style="width:200px;height:50px;float:left"></div> -->
-<div id="area"></div>
-<canvas id="edges_canvas" width="600" height="600" style="float:left; visibility:hidden;"></canvas>
-<canvas id="forbidden_canvas" width="600" height="600" style="float:left; visibility:hidden;"></canvas>
+<canvas id="canvas_result" width="600" height="600" ></canvas>
+
+
+</div>
+
 <script type="text/javascript">
 
+
 $("#loading_animation").hide();
+$("#resultContainer").hide();
+$("#download").hide();
 
 var imageLoader = document.getElementById('imageLoader');
     imageLoader.addEventListener('change', handleImage, false);
@@ -147,11 +258,15 @@ function handleImage(e){
 
 //var img = new Image();
 //img.src = 'flower.jpg';
-var canvas = document.getElementById('canvas');
-var ctx = canvas.getContext('2d');
 
-r_edges = 5
-r_stroke = 3
+var r_edges = 5
+var r_stroke = 3
+var NUMBER_OF_POINTS = 200;
+var factor_size = 1.5;
+var can1 = 20;
+var can2 = 70;
+
+
 var forbidden_values = new Array();
   for (var i = 0 ; i <canvas.width; i++)
   {
@@ -173,23 +288,51 @@ function drawForbidden(x,y, forbidden_values)
       {
         forbidden_values[ i ][ j ] = 100;
       }
-
     }
   }
 }
 
-var NUMBER_OF_POINTS = 200;
-// create svg variable
-var svg = d3.select("#area").append("svg")
-    				.attr("width", canvas.width)
-    				.attr("height", canvas.height);
-
 
 img.onload = function () {
+    $("#resultContainer").hide();
+    $("#imageLoader").hide();
+    console.log("Initializing process...");
+    //$('#log').text("Initializing process..");
 
+
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    canvas.width = 600;
+    canvas.height = 600;
+
+    // get color based on center
+    function getColor(x, y) {
+            var pixel = ctx.getImageData(x, y, 1, 1);
+          var data = pixel.data;
+          var rgba = 'rgba(' + data[0] + ',' + data[1] +
+                   ',' + data[2] + ',' + data[3] + ')';
+        return rgba
+          }
 
     /// set size proportional to image
-    canvas.height = canvas.width * (img.height / img.width);
+    tmp = canvas.width * (img.height / img.width);
+    if (tmp > canvas.height)
+    {
+      k = canvas.height / tmp;
+      canvas.width *= k;
+    }
+    else
+    {
+      canvas.height = tmp;
+    }
+
+    // create svg variable
+    /*d3.select("svg").remove();
+    var svg = d3.select("#area").append("svg")
+                .attr("width", canvas.width * factor_size)
+                .attr("height", canvas.height * factor_size);*/
+
+
     /// step 1 - resize to 50%
     var oc = document.createElement('canvas'),
         octx = oc.getContext('2d');
@@ -204,6 +347,8 @@ img.onload = function () {
     0, 0, canvas.width, canvas.height);
     /* RESIZED */
 
+    console.log("add random points...");
+    //$('#log').text("Adding random points..");
     points = []
     points.push([ 0 , 0]);
     points.push([ 0 , canvas.height]);
@@ -220,24 +365,17 @@ img.onload = function () {
     }
     for ( i = 0; i < NUMBER_OF_POINTS ; i ++)
     {
-    	var x = Math.floor(Math.random() * canvas.width);
-    	var y = Math.floor(Math.random() * canvas.height);
-		  points.push( [ x , y ] );
-
-      //forbidden_canvas_ctx.arc(x, y, r_edges, 0, 2*Math.PI, true);
-      /*var circle = new Path2D();
-      circle.arc(x, y, r_edges, 0, 2 * Math.PI);*/
-      //forbidden_canvas_ctx.fill(circle);
+      var x = Math.floor(Math.random() * canvas.width);
+      var y = Math.floor(Math.random() * canvas.height);
+      points.push( [ x , y ] );
 
     }
     for (var k = 0 ; k < points.length ; k ++)
       drawForbidden(points[k][0],points[k][1], forbidden_values);
 
     /* EDGES DETECTION */
+    //$('#log').text("Detecting edges..");
     img_u8 = new jsfeat.matrix_t(canvas.width, canvas.height, jsfeat.U8C1_t);
-    
-    var edges_canvas = document.getElementById('edges_canvas');
-    var edges_ctx = edges_canvas.getContext('2d');
     var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
     jsfeat.imgproc.grayscale(imageData.data, canvas.width, canvas.height, img_u8);
@@ -247,31 +385,33 @@ img.onload = function () {
 
     jsfeat.imgproc.gaussian_blur(img_u8, img_u8, kernel_size, 0);
 
-    jsfeat.imgproc.canny(img_u8, img_u8, 30, 158);
+    jsfeat.imgproc.canny(img_u8, img_u8, can1, can2);
 
-    var data_u32 = new Uint32Array(imageData.data.buffer);
-    var alpha = (0xff << 24);
-    var i = img_u8.cols*img_u8.rows, pix = 0;
-    while(--i >= 0) {
-        pix = img_u8.data[i];
-        data_u32[i] = alpha | (pix << 16) | (pix << 8) | pix;
-    }
-
-    edges_ctx.putImageData(imageData, 0, 0);
-
-      console.log(".. contour points");
       /* ADD POINTS AROUND EDGES */
-      for (i = 0; i < oc.width; i++) // oc.width
+
+      test = []
+      var n = img_u8.cols*img_u8.rows;
+      for (i = 0; i < img_u8.cols; i++) // oc.width
       {
-        for (j=0; j < oc.height; j++) // oc.height
+        for (j=0; j < img_u8.rows; j++) // oc.height
         {
-           var pixel = edges_ctx.getImageData(i, j, 1, 1);
-           var data = pixel.data; 
-           if (data[0] > 0 )
+           k = (j * img_u8.cols + i );
+           pix = img_u8.data[k];
+           var d = (pix << 8) | pix;
+           if ( d > 0 )
            {  
-              var d = r_stroke/2;
-              var x = Math.floor(i - d + Math.random() * r_stroke );
-              var y = Math.floor(j - d + Math.random() * r_stroke );
+              if (Math.random() < 0.9)
+              {
+                rr = r_stroke;
+              }
+              else
+              {
+                rr = 4 * r_stroke;
+              }
+              test.push(d)
+              var d = rr/2;
+              var x = Math.floor(i - d + Math.random() * rr );
+              var y = Math.floor(j - d + Math.random() * rr );
               if (x >= 0 && y >= 0 && x < canvas.width && y <  canvas.height )
               {
                 if (forbidden_values[ x ][ y ] == 0 )
@@ -287,74 +427,54 @@ img.onload = function () {
         }
       }
 
-
-      /*var forb = document.getElementById('forbidden_canvas');
-      var ctx_forb = forb.getContext('2d');
-      for (var i = 0 ; i <canvas.width; i++)
-      {
-        for (var j = 0; j < canvas.height ; j++)
-        {
-         if (forbidden_values[i][j] > 1)
-         {
-            var circle = new Path2D();
-            circle.arc(i, j, 5, 0, 2 * Math.PI);
-            ctx_forb.fill(circle);
-         }
-        }
-    }*/
-
-
-
       /* POINTS CREATED */
-    var delaunay = d3.geom.delaunay(points);
 
+      /*translates points : factor size*/
+      for (var i = 0 ; i < points.length ; i++)
+        points[i] = [ factor_size * points[i][0] , factor_size * points[i][1] ];
 
-    path = svg.append("g")
-      .selectAll("path");
-      
-      path = path.data(delaunay);
-        
-    path.enter().append("path")
-        .attr("d", function(d) { return "M" + d.join("L") + "Z"; })
-              .style('fill', function(d, i) {
-              var x = (parseFloat(d[0][0]) + parseFloat(d[1][0]) + parseFloat(d[2][0]))/3;
-              var y = (parseFloat(d[0][1]) + parseFloat(d[1][1]) + parseFloat(d[2][1]))/3;
-              return getColor(x, y);
-                
-              })
-              .style('stroke', function(d, i) {
-              var x = (parseFloat(d[0][0]) + parseFloat(d[1][0]) + parseFloat(d[2][0]))/3;
-              var y = (parseFloat(d[0][1]) + parseFloat(d[1][1]) + parseFloat(d[2][1]))/3;
-              return getColor(x, y);
-                
-              })
-              .style("stroke-width" , 1);
+    console.log("compute delaunay triangulation...");
+    //$('#log').text("Computing Delaunay triangulation..");
 
-    console.log(points.length);
-    /*for (i = 0 ; i < points.length ; i++ )
+    var canvas_result = document.getElementById('canvas_result');
+    canvas_result.height = canvas.height * factor_size;
+    canvas_result.width = canvas.width * factor_size;
+    var ctx_result = canvas_result.getContext('2d');
+
+    tris = Delaunay.triangulate( points );
+
+    //$('#log').text("Rendering..");
+    for ( var k = 0 ; k < tris.length ; k += 3 )
     {
-        var circle = svg.append("circle")
-                .attr("cx", points[i][0])
-                .attr("cy", points[i][1])
-                .attr("r", 3)
-                .attr("fill", "black");
-    }*/
+      var a = points[  tris[k] ];
+      var b = points[  tris[k + 1] ];
+      var c = points[  tris[k + 2] ];
+      //centroid
+      var x = (parseFloat(a[0]) + parseFloat(b[0]) + parseFloat(c[0]))/ ( 3 * factor_size);
+      var y = (parseFloat(a[1]) + parseFloat(b[1]) + parseFloat(c[1]))/ ( 3 * factor_size);
+      color =  getColor(x, y)
 
+      ctx_result.fillStyle = color;
+      ctx_result.strokeStyle = color;
+      ctx_result.beginPath();
+      ctx_result.moveTo(a[0],a[1]);
+      ctx_result.lineTo(b[0],b[1]);
+      ctx_result.lineTo(c[0],c[1]);
+      ctx_result.closePath();
+      ctx_result.fill();
+      ctx_result.stroke();
 
+    }
+    
+    console.log("done!");
     $("#loading_animation").hide();
+    $("#resultContainer").show();
+    $("#download").show();
+    $("#imageLoader").hide();
+    //$('#log').hide();
     
 
 }
-
-// get color based on center
-function getColor(x, y) {
-        var pixel = ctx.getImageData(x, y, 1, 1);
-	    var data = pixel.data;
-	    var rgba = 'rgba(' + data[0] + ',' + data[1] +
-	             ',' + data[2] + ',' + data[3] + ')';
-
-		return rgba
-      }
 
 
 var color = document.getElementById('color');
@@ -369,6 +489,25 @@ function pick(event) {
   color.textContent = rgba;
 }
 // canvas.addEventListener('mousemove', pick);
+
+
+/**
+ * This is the function that will take care of image extracting and
+ * setting proper filename for the download.
+ * IMPORTANT: Call it from within a onclick event.
+*/
+function downloadCanvas(link, canvasId, filename) {
+    link.href = document.getElementById(canvasId).toDataURL();
+    link.download = filename;
+}
+
+/** 
+ * The event handler for the link's onclick event. We give THIS as a
+ * parameter (=the link element), ID of the canvas and a filename.
+*/
+document.getElementById('download').addEventListener('click', function() {
+    downloadCanvas(this, 'canvas_result', 'yourAmazingPolygonArt.png');
+}, false);
 
 
 </script>
